@@ -9,11 +9,24 @@ const getUsers = () => {
     })
 };
 
+
+
 const renderUsers = (users) => {
     const container = document.querySelector('.users');
 
-    users.forEach(item => {
-        container.append(item.name + ' ' + item.age);
+    users.data.forEach(item => {
+        const userElement = document.createElement('div');
+        userElement.classList.add('user');
+        userElement.innerHTML = `
+        <h4>Name: ${item.name}</h4>
+        <h4> age: ${item.age}</h4>
+        `;
+        const removeBtn = document.createElement('button');
+        removeBtn.classList.add('user__remove');
+        removeBtn.textContent = 'X';
+        userElement.append(removeBtn);
+
+        container.append(userElement);
     });
 }
 
@@ -23,4 +36,3 @@ const init = async () => {
 }
 
 init();
-getUsers();
