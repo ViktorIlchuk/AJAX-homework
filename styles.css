@@ -1,5 +1,6 @@
 form {
     margin: 20px auto;
+    display: flex;
   }
   
   .users {

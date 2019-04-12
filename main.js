@@ -7,9 +7,17 @@ const getUsers = () => {
         console.log('couldnt find users', err);
         return [];
     })
-};
+}; 
 
-
+const deleteUser = async (userId, userElement) => {
+    try {
+        const res = await fetch (API + 'users/' + userId, {method: 'DELETE'});
+        userElement.remove();
+        console.log('res: ', res);
+    } catch(err) {
+        console.log('couldnt delete user', err);
+    }
+}
 
 const renderUsers = (users) => {
     const container = document.querySelector('.users');
@@ -24,10 +32,14 @@ const renderUsers = (users) => {
         const removeBtn = document.createElement('button');
         removeBtn.classList.add('user__remove');
         removeBtn.textContent = 'X';
-        userElement.append(removeBtn);
+        removeBtn.addEventListener('click', () => {
+        deleteUser(item.id, userElement);
+        })
 
+        userElement.append(removeBtn);
         container.append(userElement);
     });
+    console.log(users);
 }
 
 const init = async () => {
@@ -35,4 +47,31 @@ const init = async () => {
     renderUsers(users);
 }
 
-init();
+const createUser = () => {
+    const name = document.querySelector('#name').value;
+    const age = document.querySelector('#age').value;
+    fetch(API + 'users', {
+        method: 'POST',
+        body: JSON.stringify({name: name, age: age})
+      }).then(res => {
+        return res.json();
+      }).then(({id}) => {
+        const user = {
+          name,
+          age,
+          id
+        };
+        
+        renderUsers([user]);
+      })
+      .catch(err => {
+        console.log('couldnt create a user', err);
+      })
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const createUserBtn = document.querySelector('#create-user-btn')
+    createUserBtn.addEventListener('click', createUser);
+  });
+
+  init();
