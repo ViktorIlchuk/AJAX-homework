@@ -22,7 +22,7 @@ const deleteUser = async (userId, userElement) => {
 const renderUsers = (users) => {
     const container = document.querySelector('.users');
 
-    users.data.forEach(item => {
+    users.forEach(item => {
         const userElement = document.createElement('div');
         userElement.classList.add('user');
         userElement.innerHTML = `
@@ -39,12 +39,11 @@ const renderUsers = (users) => {
         userElement.append(removeBtn);
         container.append(userElement);
     });
-    console.log(users);
 }
 
 const init = async () => {
     const users = await getUsers();
-    renderUsers(users);
+    renderUsers(users.data);
 }
 
 const createUser = () => {
