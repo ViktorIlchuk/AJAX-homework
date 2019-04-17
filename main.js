@@ -13,7 +13,6 @@ const deleteUser = async (userId, userElement) => {
     try {
         const res = await fetch (API + 'users/' + userId, {method: 'DELETE'});
         userElement.remove();
-        console.log('res: ', res);
     } catch(err) {
         console.log('couldnt delete user', err);
     }
@@ -51,7 +50,11 @@ const createUser = () => {
     const age = document.querySelector('#age').value;
     fetch(API + 'users', {
         method: 'POST',
-        body: JSON.stringify({name: name, age: age})
+        body: JSON.stringify({name, age}),
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          }
       }).then(res => {
         return res.json();
       }).then(({id}) => {
@@ -60,7 +63,6 @@ const createUser = () => {
           age,
           id
         };
-        
         renderUsers([user]);
       })
       .catch(err => {
